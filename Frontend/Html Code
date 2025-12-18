@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Café Machine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <h1>Café Machine</h1>
+
+    <div class="controls">
+        <label>Category</label>
+        <select id="category"></select>
+
+        <label>Item</label>
+        <select id="item"></select>
+
+        <button onclick="addItem()">Add Item</button>
+        <button onclick="removeItem()">Remove Item</button>
+        <button onclick="clearCart()">Clear Cart</button>
+        <button onclick="viewOrderHistory()">View Order History</button>
+        <button onclick="viewAnalytics()">View Analytics Dashboard</button>
+
+    </div>
+
+    <h2>Order Summary</h2>
+
+    <textarea id="summary" readonly></textarea>
+
+    <button class="checkout" onclick="checkout()">Checkout & Save PDF</button>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="script.js"></script>
+</body>
+</html>
