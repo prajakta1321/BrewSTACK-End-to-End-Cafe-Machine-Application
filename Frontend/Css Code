@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    background-color: #f5deb3;
+    font-family: Arial, sans-serif;
+}
+
+.app {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+label {
+    font-size: 14px;
+}
+
+select {
+    width: 220px;
+    padding: 6px;
+}
+
+button {
+    width: 220px;
+    padding: 8px;
+    background-color: #8b4513;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #6f360f;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+textarea {
+    width: 400px;
+    height: 170px;
+    margin-top: 10px;
+    padding: 10px;
+    resize: none;
+    font-family: monospace;
+}
+
+.checkout {
+    margin-top: 15px;
+}
