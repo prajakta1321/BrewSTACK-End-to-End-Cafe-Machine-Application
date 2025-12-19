@@ -8,4 +8,4 @@ BrewSTACK is a full-stack café machine application designed to simulate real-wo
 
 # Fast API:
 
-<img width="1920" height="1025" alt="image" src="https://github.com/user-attachments/assets/86e642ff-7dbb-46cb-9220-bb436a4305dd" />
+<img width="553" height="133" alt="image" src="https://github.com/user-attachments/assets/34609dd4-d6d1-4af9-958a-7c4e6cfbfd8b" />
