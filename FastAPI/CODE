@@ -1,0 +1,123 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
+from datetime import datetime
+
+orders_db = []
+
+app = FastAPI(title="Cafe Machine Backend")
+
+# -------------------------------
+# Enable CORS (for frontend)
+# -------------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# -------------------------------
+# Menu data
+# -------------------------------
+menu = {
+    "Coffee": [
+        {"name": "Espresso", "price": 120},
+        {"name": "Latte", "price": 135},
+        {"name": "Cappuccino", "price": 113},
+        {"name": "Americano", "price": 140},
+        {"name": "Mocha", "price": 155}
+    ],
+    "Tea": [
+        {"name": "Masala Chai", "price": 15},
+        {"name": "Green Tea", "price": 20},
+        {"name": "Lemon Tea", "price": 25}
+    ],
+    "Cold Beverages": [
+        {"name": "Cold Coffee", "price": 40},
+        {"name": "Iced Latte", "price": 55},
+        {"name": "Milkshake", "price": 65}
+    ],
+    "Non-Coffee Drinks": [
+        {"name": "Hot Chocolate", "price": 80},
+        {"name": "Matcha Latte", "price": 88},
+        {"name": "Fresh Lime Soda", "price": 33}
+    ],
+    "Add-ons": [
+        {"name": "Extra Milk", "price": 12},
+        {"name": "Soy Milk", "price": 41},
+        {"name": "Whipped Cream", "price": 32}
+    ]
+}
+
+# -------------------------------
+# Pydantic Models
+# -------------------------------
+class OrderItem(BaseModel):
+    name: str
+    price: float
+    quantity: int
+
+class Order(BaseModel):
+    items: List[OrderItem]
+    payment_method : str
+
+# -------------------------------
+# Root Endpoint
+# -------------------------------
+@app.get("/")
+def root():
+    return {"message": "Cafe Backend is running"}
+
+# -------------------------------
+# Menu API
+# -------------------------------
+@app.get("/menu")
+def get_menu():
+    return menu
+
+# -------------------------------
+# Order API
+# -------------------------------
+@app.post("/order")
+def place_order(order: Order):
+    subtotal = sum(item.price * item.quantity for item in order.items)
+    gst = round(subtotal * 0.05, 2)
+    total = round(subtotal + gst, 2)
+
+    saved_order ={
+        "id" : len(orders_db) +1,
+        "items": order.items,
+        "payment_method": order.payment_method,
+        "subtotal": subtotal,
+        "gst": gst,
+        "total": total,
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    orders_db.append(saved_order)
+
+    return saved_order
+
+@app.get("/orders")
+def get_orders():
+    return orders_db
+
+@app.get("/analytics")
+def analytics():
+    total_orders = len(orders_db)
+    total_revenue = sum(order["total"] for order in orders_db)
+
+    item_count = {}
+    for order in orders_db:
+        for item in order["items"]:
+            item_count[item.name] = item_count.get(item.name, 0) + item.quantity
+
+    most_sold_item = max(item_count, key=item_count.get) if item_count else None
+
+    return {
+        "total_orders": total_orders,
+        "total_revenue": round(total_revenue, 2),
+        "most_sold_item": most_sold_item
+    }
