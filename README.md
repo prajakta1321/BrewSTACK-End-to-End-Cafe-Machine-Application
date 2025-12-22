@@ -1,44 +1,39 @@
 # 🎯 BrewSTACK-End-to-End-Caf-Machine-Application
 Built a full-stack café ordering system using MySQL, FastAPI, and JavaScript, enabling real-time menu retrieval, order placement, payment tracking, order history, and sales analytics through REST APIs.
 
-# Mysql :
+# ✅ Mysql :
 
-# Start MYSQL backend with the following commands and run them.
+# Start MYSQL backend with the following commands and run them :
 
 USE cafe_db;
+
 SELECT * FROM items;
 
 <img width="841" height="727" alt="image" src="https://github.com/user-attachments/assets/ac6ffa34-844e-4326-8e40-ef8e38c0c9a2" />
 
-# Activate Virtual environment in VSCode: 
+# ✅ Activate Virtual environment in VSCode with the following commands : 
 
 cd (Folder_name location)
+
 venv\Scripts\activate
 
 # You should see:
 
 (venv)
 
-# Run FastAPI Backend
+# ✅ Run FastAPI Backend
 
 Go to backend folder (IMPORTANT):
 
-cd Cafe_backend
-
-
-# Run:
-
-uvicorn main:app --reload
-
-# Run FastAPI Backend
-
-# Go to backend folder (IMPORTANT):
+cd (folder_name)
 
 cd Cafe_backend
 
-# Run:
+
+# ✅ Run:
 
 uvicorn main:app --reload
+
 
 # If successful, you’ll see:
 
@@ -46,9 +41,9 @@ Uvicorn running on http://127.0.0.1:8000
 
 # Test Backend (Very Important)
 
-# Open browser and check:
+ Open browser and check:
 
-# Backend alive
+ Backend alive
 
 http://127.0.0.1:8000
 
