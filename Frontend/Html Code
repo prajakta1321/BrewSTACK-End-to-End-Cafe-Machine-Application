@@ -30,6 +30,25 @@
 
     <textarea id="summary" readonly></textarea>
 
+    <h3>Payment Method</h3>
+    <label>
+        <input type="radio" name="payment" value="Cash" checked>
+        Cash
+    </label>
+
+    <label>
+        <input type="radio" name="payment" value="UPI">
+        UPI
+    </label>
+
+    <label>
+        <input type="radio" name="payment" value="Card">
+        Card
+    </label>
+        
+    <button id="placeOrderBtn">Place Order</button>
+    <div id="bill"></div>
+    
     <button class="checkout" onclick="checkout()">Checkout & Save PDF</button>
 
 </div>
