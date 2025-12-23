@@ -1,0 +1,214 @@
+const API_BASE = "http://127.0.0.1:8000";
+
+let cart = [];
+let menuData = {};
+
+// -------------------------------
+// Load menu from backend (MySQL)
+// -------------------------------
+async function loadMenu() {
+    try {
+        const res = await fetch(`${API_BASE}/menu`);
+        const items = await res.json();
+
+        // Group items by category
+        menuData = {};
+        items.forEach(item => {
+            if (!menuData[item.category]) {
+                menuData[item.category] = [];
+            }
+            menuData[item.category].push(item);
+        });
+
+        const categorySelect = document.getElementById("category");
+        categorySelect.innerHTML = "";
+
+        Object.keys(menuData).forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+
+        loadItems();
+    } catch (err) {
+        console.error("Error loading menu:", err);
+    }
+}
+
+// -------------------------------
+// Load items when category changes
+// -------------------------------
+function loadItems() {
+    const category = document.getElementById("category").value;
+    const itemSelect = document.getElementById("item");
+    itemSelect.innerHTML = "";
+
+    if (!menuData[category]) return;
+
+    menuData[category].forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.id; // item_id for backend
+        option.textContent = `${item.name} - ₹${item.price}`;
+        option.dataset.name = item.name;
+        option.dataset.price = item.price;
+        itemSelect.appendChild(option);
+    });
+}
+
+// -------------------------------
+// Add item to cart
+// -------------------------------
+function addItem() {
+    const select = document.getElementById("item");
+    if (select.selectedIndex === -1) return;
+
+    const option = select.options[select.selectedIndex];
+
+    const itemId = parseInt(option.value);
+    const name = option.dataset.name;
+    const price = parseFloat(option.dataset.price);
+
+    const existing = cart.find(i => i.item_id === itemId);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({
+            item_id: itemId,
+            name: name,
+            price: price,
+            quantity: 1
+        });
+    }
+    updateSummary();
+}
+
+// -------------------------------
+// Remove last item from cart
+// -------------------------------
+function removeItem() {
+    if (cart.length > 0) {
+        cart.pop();
+        updateSummary();
+    }
+}
+
+// -------------------------------
+// Clear cart
+// -------------------------------
+function clearCart() {
+    cart = [];
+    updateSummary();
+    document.getElementById("bill").innerHTML = "";
+}
+
+// -------------------------------
+// Update order summary
+// -------------------------------
+function updateSummary() {
+    const summary = document.getElementById("summary");
+    summary.value = "";
+
+    let subtotal = 0;
+
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        summary.value += `${item.name} x ${item.quantity} = ₹${itemTotal}\n`;
+    });
+
+    if (cart.length > 0) {
+        summary.value += `\nSubtotal: ₹${subtotal}`;
+    }
+}
+
+// -------------------------------
+// Place order (CALL BACKEND)
+// -------------------------------
+async function placeOrder() {
+    if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+    }
+
+    const paymentInput = document.querySelector('input[name="payment"]:checked');
+    if (!paymentInput) {
+        alert("Please select a payment method");
+        return;
+    }
+
+    const orderItems = cart.map(item => ({
+        item_id: item.item_id,
+        quantity: item.quantity
+    }));
+
+    try {
+        const res = await fetch(`${API_BASE}/order`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                items: orderItems,
+                payment_method: paymentInput.value
+            })
+        });
+
+        const data = await res.json();
+
+        document.getElementById("bill").innerHTML = `
+            <h3>Order Placed Successfully</h3>
+            <p><b>Order ID:</b> ${data.order_id}</p>
+            <p><b>Total:</b> ₹${data.total}</p>
+        `;
+
+        clearCart();
+    } catch (err) {
+        console.error("Order failed:", err);
+    }
+}
+
+// -------------------------------
+// View Order History
+// -------------------------------
+async function viewOrderHistory() {
+    try {
+        const res = await fetch(`${API_BASE}/orders`);
+        const data = await res.json();
+
+        let text = "ORDER HISTORY\n\n";
+
+        data.forEach(row => {
+            text += `Order #${row.id} | ${row.name} x${row.quantity} | ₹${row.total}\n`;
+        });
+
+        document.getElementById("summary").value = text;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// -------------------------------
+// View Analytics
+// -------------------------------
+async function viewAnalytics() {
+    try {
+        const res = await fetch(`${API_BASE}/analytics`);
+        const data = await res.json();
+
+        document.getElementById("summary").value =
+            `ANALYTICS DASHBOARD\n\n` +
+            `Total Orders: ${data.total_orders}\n` +
+            `Total Revenue: ₹${data.total_revenue}\n` +
+            `Most Sold Item: ${data.most_sold_item || "N/A"}`;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// -------------------------------
+// Event bindings
+// -------------------------------
+document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
+document.getElementById("category").addEventListener("change", loadItems);
+
+// Load menu on page load
+window.onload = loadMenu;
