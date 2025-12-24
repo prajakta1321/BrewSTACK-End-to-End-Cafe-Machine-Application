@@ -1,0 +1,3 @@
+create database cafe_db;
+use cafe_db;
+show databases;
