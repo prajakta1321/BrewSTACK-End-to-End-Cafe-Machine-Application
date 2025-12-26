@@ -1,0 +1,5 @@
+insert into items(name, category, price) values
+('Masala Chai', 'Tea', 10),
+ ('Green Tea', 'Tea', 20),
+ ('lemon Tea', 'Tea', 20),
+ ('Balck Tea', 'tea', 7);
