@@ -1,0 +1,6 @@
+insert into items(name, category, price) values
+('Espresso', "Coffee", 120),
+('Latte', 'Coffee', 170 ),
+('Americano', 'Coffee', 140),
+('Cappuccino', 'Coffee', 160),
+('Mocha', 'Coffee', 180);
