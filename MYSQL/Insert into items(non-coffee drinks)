@@ -1,0 +1,4 @@
+INSERT INTO items (name, category, price) VALUES
+('Hot Chocolate', 'Non-Coffee Drinks', 45),
+('Milk', 'Non-Coffee Drinks', 25),
+('Badam Milk', 'Non-Coffee Drinks', 50);
