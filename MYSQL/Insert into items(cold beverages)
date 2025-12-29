@@ -1,0 +1,5 @@
+insert into items(name, category, price) values
+('Cold Coffee', 'Cold Beverages', 40),
+('Iced Latte', 'Cold Beverages', 55),
+('Chocolate Milkshake', 'Cold Beverages', 45),
+('Vanilla Milkshake', 'Cold Beverages', 55);
