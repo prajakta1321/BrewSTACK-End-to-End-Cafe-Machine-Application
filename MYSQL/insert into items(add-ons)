@@ -1,0 +1,5 @@
+INSERT INTO items (name, category, price) VALUES
+('Extra Sugar', 'Add-ons', 9),
+('Extra Milk', 'Add-ons', 22),
+('Whipped Cream', 'Add-ons', 33),
+('Chocolate Syrup', 'Add-ons', 33);
