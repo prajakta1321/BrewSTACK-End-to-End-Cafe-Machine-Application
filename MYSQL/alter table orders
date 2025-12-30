@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD gst DECIMAL(10,2);
