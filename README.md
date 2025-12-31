@@ -5,7 +5,7 @@ Built a full-stack café ordering system using MySQL, FastAPI, and JavaScript, e
 
 # Start MYSQL backend with the following commands and run them :
 
-USE cafe_db;
+use cafe_db;
 
 SELECT * FROM items;
 
