@@ -1,0 +1,2 @@
+use cafe_db;
+select * from items;
