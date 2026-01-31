@@ -77,3 +77,9 @@ http://127.0.0.1:5500
 <img width="1853" height="926" alt="image" src="https://github.com/user-attachments/assets/adb1bffb-3f08-42be-9c04-6dc84990ed78" />
 
 click Ctrl + c in vscode to stop fastapi running.
+
+
+# Tried Deploying on Render:
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4f61dd93-023c-4fb4-b6d8-e30622cc0721" />
+
